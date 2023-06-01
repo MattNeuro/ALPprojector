@@ -76,27 +76,21 @@ bool createServer (ALPB_HDEVICE alpid, long nSizeX, long nSizeY) {
 
     // Allocate memory for the image mask, load the mask from file
     int imageSize           = nSizeX * nSizeY;              // set receive buffer length to size of image.
-    unsigned char* image    = (unsigned char*)malloc(nSizeX * nSizeY);
-    int recvbuflen          = 1;                     // Read one character at a time.
-    char recvBuf[1];        // Note!! the size of this buffer must equal the size of recvbuflen 
-    int i = 0;
+    unsigned char * image   = (unsigned char *) malloc(nSizeX * nSizeY);
+    char recvBuf[1];        // Read one character at a time. Bit inefficient, but soit.
+    int i                   = 0;
 
     // Receive until the peer shuts down the connection
     do {
-        iResult = recv(ClientSocket, recvBuf, recvbuflen, 0);
+        iResult = recv(ClientSocket, recvBuf, 1, 0);
         if (iResult > 0) {
-            
             unsigned char cur = 0;
-
-            for (int j = 0; j < recvbuflen; j++)
-                cur = cur | recvBuf[j];
-
+            cur = cur | recvBuf[0];
 
             FillMemory(
                 image + (i * 8),	// row start address
-                8,				// row size in bits
-                cur);			// CHAR_BIT bits of image data
-
+                8,				    // row size in bits
+                cur);			    // CHAR_BIT bits of image data
 
             i++;
 
