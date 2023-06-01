@@ -78,7 +78,7 @@ bool createServer (ALPB_HDEVICE alpid, long nSizeX, long nSizeY) {
     int imageSize           = nSizeX * nSizeY;              // set receive buffer length to size of image.
     unsigned char* image    = (unsigned char*)malloc(nSizeX * nSizeY);
     int recvbuflen          = 1;                     // Read one character at a time.
-    char recvBuf[1];
+    char recvBuf[1];        // Note!! the size of this buffer must equal the size of recvbuflen 
     int i = 0;
 
     // Receive until the peer shuts down the connection
@@ -89,9 +89,8 @@ bool createServer (ALPB_HDEVICE alpid, long nSizeX, long nSizeY) {
             unsigned char cur = 0;
 
             for (int j = 0; j < recvbuflen; j++)
-                //if (recvBuf[j] > 0)
-                  //  cur = cur | (0x00000001 << j);
-                cur = cur | recvBuf[0];
+                cur = cur | recvBuf[j];
+
 
             FillMemory(
                 image + (i * 8),	// row start address
