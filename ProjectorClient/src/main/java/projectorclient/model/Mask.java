@@ -18,6 +18,20 @@ public class Mask extends LinkedList<MaskSpot> {
     
     private int                     spotSize = 50;   
     
+    
+    protected Mask () {
+        // Ensure only local classes can instantiate.
+    }
+    
+    
+    /**
+     *  Change the default spot size.
+     * 
+     *  After changing this value, all new mask spots will have the new spot
+     *  size.
+     * 
+     *  @param newSize 
+     */
     public void setSpotSize (int newSize) {
         this.spotSize = newSize;
     }

@@ -59,6 +59,10 @@ public class Feed extends Thread {
         System.out.println("Updating capture area.");
     }
     
+    public void clearMask () {
+        mask.clear();
+    }
+    
     
     public void addMaskSpot (int x, int y) {
         mask.addSpot(x, y);

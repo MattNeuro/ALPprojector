@@ -6,8 +6,10 @@ package projectorclient.controller;
 
 import javax.swing.JFrame;
 import projectorclient.view.ClientFrame;
+import projectorclient.view.InterfaceListener;
 import projectorclient.model.Feed;
 import projectorclient.model.NetworkClient;
+
 
 /**
  *
@@ -39,7 +41,8 @@ public class Controller {
     
     public void startGui () throws Exception {
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gui.setVisible(true);        
+        gui.setVisible(true);
+        new InterfaceListener(); // Register hotkey listener. 
     }
     
     

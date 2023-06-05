@@ -11,4 +11,11 @@
         <maven.compiler.target>20</maven.compiler.target>
         <exec.mainClass>projectorclient.ProjectorClient</exec.mainClass>
     </properties>
+     <dependencies>  
+        <dependency>
+            <groupId>com.1stleg</groupId>
+            <artifactId>jnativehook</artifactId>
+            <version>LATEST</version>
+        </dependency>
+    </dependencies>  
 </project>

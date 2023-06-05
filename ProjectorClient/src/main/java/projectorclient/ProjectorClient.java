@@ -3,7 +3,7 @@ package projectorclient;
 import projectorclient.controller.Controller;
 
 /**
- *  Projector client
+ *  Projector client.
  * 
  *  This handles the client-side operations of controlling a digital micromirror
  *  device based on live input from a camera. To this end, it will screen-grab
