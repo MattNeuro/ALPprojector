@@ -5,12 +5,12 @@ projectorclient\view\ClientFrame$4.class
 projectorclient\model\MaskSpot.class
 projectorclient\model\Mask.class
 projectorclient\view\ClientFrame$9.class
+projectorclient\ALPClient.class
 projectorclient\view\ClientFrame$11.class
 projectorclient\model\Feed.class
 projectorclient\view\ClientFrame$3.class
 projectorclient\view\ClientFrame$8.class
 projectorclient\view\InterfaceListener.class
-projectorclient\ProjectorClient.class
 projectorclient\view\ClientFrame$7.class
 projectorclient\view\InterfaceListener$1.class
 projectorclient\view\ClientFrame$10.class
