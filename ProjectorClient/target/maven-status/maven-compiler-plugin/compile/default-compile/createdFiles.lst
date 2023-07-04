@@ -19,4 +19,5 @@ projectorclient\view\ClientFrame$10.class
 projectorclient\controller\Controller.class
 projectorclient\model\NetworkClient.class
 projectorclient\view\ClientFrame$2.class
+projectorclient\view\ClientFrame$14.class
 projectorclient\view\ClientFrame.class

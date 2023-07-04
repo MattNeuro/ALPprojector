@@ -36,6 +36,11 @@ public class Mask extends LinkedList<MaskSpot> {
         this.spotSize = newSize;
     }
     
+    public int getSpotSize () {
+        return this.spotSize;
+    }
+    
+    
     
     /**
      *  Convert this mask into a bitmask. To do so, we first create a binary

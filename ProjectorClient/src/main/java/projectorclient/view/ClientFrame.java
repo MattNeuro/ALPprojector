@@ -4,6 +4,8 @@
  */
 package projectorclient.view;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import javax.swing.JOptionPane;
 import projectorclient.controller.Controller;
 import projectorclient.model.Feed;
@@ -48,7 +50,8 @@ public class ClientFrame extends javax.swing.JFrame {
         clearAllButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1200, 800));
+        setPreferredSize(new java.awt.Dimension(1200, 850));
+        setResizable(false);
         addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 formFocusGained(evt);
@@ -64,6 +67,11 @@ public class ClientFrame extends javax.swing.JFrame {
 
         displayLabel.setText("jLabel1");
         displayLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        displayLabel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                displayLabelMouseMoved(evt);
+            }
+        });
         displayLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 displayLabelMouseClicked(evt);
@@ -145,6 +153,7 @@ public class ClientFrame extends javax.swing.JFrame {
         jLabel6.setText("Mask Size (G/H)");
 
         toggleAll.setText("Toggle All");
+        toggleAll.setPreferredSize(new java.awt.Dimension(83, 15));
         toggleAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 toggleAllActionPerformed(evt);
@@ -152,6 +161,7 @@ public class ClientFrame extends javax.swing.JFrame {
         });
 
         clearAllButton.setText("Clear All");
+        clearAllButton.setPreferredSize(new java.awt.Dimension(74, 15));
         clearAllButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearAllButtonActionPerformed(evt);
@@ -235,9 +245,9 @@ public class ClientFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(maskSizeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(toggleAll, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(toggleAll, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(clearAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(clearAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(uploadMask)
                 .addContainerGap())
@@ -309,16 +319,24 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_clearAllButtonActionPerformed
 
     private void toggleAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleAllActionPerformed
-        // TODO add your handling code here:
         if (toggleAll.isSelected())
             Feed.getInstance().fillMask();
         else
             Feed.getInstance().clearMask();
+        
+        // After the toggle all button is pressed, automatically upload the mask.
+        uploadMaskActionPerformed(evt);
     }//GEN-LAST:event_toggleAllActionPerformed
 
     private void maskSizeSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_maskSizeSliderStateChanged
         Feed.getInstance().setMaskSpotSize(maskSizeSlider.getValue());
     }//GEN-LAST:event_maskSizeSliderStateChanged
+
+    private void displayLabelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_displayLabelMouseMoved
+        // Mouse moved, update spot indicator
+        mouseX = evt.getX();
+        mouseY = evt.getY();
+    }//GEN-LAST:event_displayLabelMouseMoved
 
     private void captureAreaChanged () {
         System.out.println("GUI requests a change to the capture area.");
@@ -360,6 +378,9 @@ public class ClientFrame extends javax.swing.JFrame {
             }
         });
     }
+    
+    // Store mouse location
+    public int mouseX, mouseY;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextField captureHeight;
