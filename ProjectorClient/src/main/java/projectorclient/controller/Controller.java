@@ -42,7 +42,8 @@ public class Controller {
     public void startGui () throws Exception {
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gui.setVisible(true);
-        new InterfaceListener(); // Register hotkey listener. 
+        new InterfaceListener(); // Register hotkey listener.
+        feedThread.updateCaptureAreaPreferences();
     }
     
     

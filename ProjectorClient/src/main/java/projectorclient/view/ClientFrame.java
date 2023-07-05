@@ -4,8 +4,7 @@
  */
 package projectorclient.view;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Rectangle;
 import javax.swing.JOptionPane;
 import projectorclient.controller.Controller;
 import projectorclient.model.Feed;
@@ -341,6 +340,15 @@ public class ClientFrame extends javax.swing.JFrame {
     private void captureAreaChanged () {
         System.out.println("GUI requests a change to the capture area.");
         Feed.getInstance().updateCaptureArea();
+    }
+
+
+    // When loading in, the capture preferences are restored from previous run.
+    public void updateAreaPreferences (Rectangle area) {
+        captureX.setText(Integer.toString(area.x));
+        captureY.setText(Integer.toString(area.y));
+        captureWidth.setText(Integer.toString(area.width));
+        captureHeight.setText(Integer.toString(area.height));
     }
        
     

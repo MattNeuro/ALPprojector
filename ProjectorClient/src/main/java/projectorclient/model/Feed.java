@@ -5,8 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Robot;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.prefs.Preferences;
 import javax.swing.ImageIcon;
 import projectorclient.controller.Controller;
 import projectorclient.view.ClientFrame;
@@ -22,14 +22,15 @@ import projectorclient.view.ClientFrame;
 public class Feed extends Thread {
     
     
-    private boolean     active          = true;
-    private Rectangle   captureArea;
-    private Mask        mask;
-    private int         captureWidth    = 1024,
-                        captureHeight   = 768;
-    private static int  width           = 1024,
-                        height          = 768;
-    private static Feed instance;   // Singleton instance.
+    private boolean             active          = true;
+    private Rectangle           captureArea;
+    private Mask                mask;
+    private int                 captureWidth    = 1024,
+                                captureHeight   = 768;
+    private static int          width           = 1024,
+                                height          = 768;
+    private static Feed         instance;   // Singleton instance.
+    private static Preferences  preferences;
 
     
     /**
@@ -61,9 +62,29 @@ public class Feed extends Thread {
         int offsetY     = Integer.parseInt(Controller.getInstance().gui.captureY.getText());
         captureWidth    = Integer.parseInt(Controller.getInstance().gui.captureWidth.getText());
         captureHeight   = Integer.parseInt(Controller.getInstance().gui.captureHeight.getText());
-        captureArea = new Rectangle(offsetX, offsetY, captureWidth, captureHeight);
+        captureArea     = new Rectangle(offsetX, offsetY, captureWidth, captureHeight);
         System.out.println("Updating capture area.");
+        updateCaptureAreaPreferences();
     }
+    
+
+    /**
+     *  Store capture area preferences.
+     * 
+     *  This will store the offsets and width / height of the capture
+     *  area, so that when we relaunch the application later, we can reload
+     *  those same coordinates.
+     */
+    public void updateCaptureAreaPreferences () {
+        preferences.putInt("width",     captureArea.width);
+        preferences.putInt("height",    captureArea.height);
+        preferences.putInt("offsetX",   captureArea.x);
+        preferences.putInt("offsetY",   captureArea.y);
+        
+        // Make sure the GUI matches our preferences.
+        Controller.getInstance().gui.updateAreaPreferences(captureArea); 
+    }
+    
     
     public void clearMask () {
         mask.clear();
@@ -109,7 +130,14 @@ public class Feed extends Thread {
      *  Ideally, we store and retrieve these as a user setting at some point.
      */
     private Feed () {
-        captureArea = new Rectangle(-100, 100, 1024, 768);    // Arbitrary
+        // Retrieve user preferences. Use default values as fallback.
+        preferences     = Preferences.userNodeForPackage(projectorclient.model.Feed.class);
+        int offsetX     = preferences.getInt("offsetX",  100);
+        int offsetY     = preferences.getInt("offsetY",  100);
+        captureWidth    = preferences.getInt("width",    1024);
+        captureHeight   = preferences.getInt("height",   768);
+        
+        captureArea = new Rectangle(offsetX, offsetY, captureWidth, captureHeight);
         mask        = new Mask();
         System.out.println("New feed created.");
     }
@@ -138,7 +166,7 @@ public class Feed extends Thread {
         BufferedImage output    = new BufferedImage(width, height, capture.getType()); // new image, based on captured image
         Graphics2D graphics     = output.createGraphics();
         
-        graphics.setColor(new Color(1f, 0f, 0f, 0.5f));
+        graphics.setColor(new Color(1f, 0f, 0f, 0.2f));
         graphics.setStroke(new BasicStroke(strokeWidth));
         
         // By drawing the output image based on the captured image, we apply a width and height scaling.
@@ -154,5 +182,5 @@ public class Feed extends Thread {
 
         // We are done drawing, display the new graphics:
         gui.displayLabel.setIcon(new ImageIcon(output));
-    }
+    }   
 }
