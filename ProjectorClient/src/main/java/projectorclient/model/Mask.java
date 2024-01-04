@@ -54,6 +54,11 @@ public class Mask extends LinkedList<MaskSpot> {
         Graphics2D graphics     = source.createGraphics();
         for (MaskSpot spot : this)
             graphics.fillOval(spot.x,spot.y, spot.size, spot.size);
+        
+        // check if we need to create grid lines on our mask:
+        Feed feed = Feed.getInstance();
+        if (feed.getGridLinesActive())
+            feed.addGridLines(graphics);
 
         return ((DataBufferByte) source.getRaster().getDataBuffer()).getData();
     }

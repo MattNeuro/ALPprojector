@@ -23,6 +23,7 @@ public class Feed extends Thread {
     
     
     private boolean             active          = true;
+    private boolean             gridLines       = false;
     private Rectangle           captureArea;
     private Mask                mask;
     private int                 captureWidth    = 1024,
@@ -96,16 +97,32 @@ public class Feed extends Thread {
         mask.addSpot(x, y);
     }
     public void setMaskSpotSize (int newSize) {
-            mask.setSpotSize(newSize);
+        mask.setSpotSize(newSize);
     }
-    
-    
+    public void setGridLinesActive (boolean gridLinesActive) {
+        this.gridLines = gridLinesActive;
+    }
     public void setActive (boolean newState) {
         this.active = newState;
     }
     
+    public boolean getGridLinesActive () {
+            return this.gridLines;
+    }
     
+    
+    /**
+     *  Retrieve a bitmask where drawn areas are 1 and empty areas are 0
+     * 
+     *  This bitmask is used by the network client to instruct the ALP
+     *  controller on which mirrors to flip.
+     * 
+     *  @return 
+     */
     public byte[] getBitMask() {
+        
+        
+        
         return mask.asBitMask();
     }
     
@@ -180,7 +197,36 @@ public class Feed extends Thread {
         int offset = (mask.getSpotSize() / 2) - (strokeWidth / 2);
         graphics.drawOval(gui.mouseX - offset, gui.mouseY - offset, mask.getSpotSize() - strokeWidth, mask.getSpotSize() - strokeWidth);
 
+        // Draw grid-lines if requested
+        if (gridLines)
+            addGridLines(graphics);
+        
         // We are done drawing, display the new graphics:
         gui.displayLabel.setIcon(new ImageIcon(output));
-    }   
+    }
+    
+    
+    
+    /**
+     *  Apply grid-lines to the image before displaying it
+     */
+    public void addGridLines (Graphics2D graphics) {
+        int strokeWidth = 4;
+        graphics.setColor(new Color(0f, 1f, 0f, 0.5f));
+        graphics.setStroke(new BasicStroke(strokeWidth));
+        
+        // Draw four lines around the perimiter
+        graphics.drawLine(0, 0, width, 0);
+        graphics.drawLine(0, height, width, height);
+        graphics.drawLine(0, 0, 0, height);
+        graphics.drawLine(width - (strokeWidth/2), 0, width - (strokeWidth/2), height);
+        
+        // Draw 2 horizontal and 3 vertical dividing lines
+        graphics.drawLine(0, height / 3, width, height / 3);
+        graphics.drawLine(0, height - (height / 3), width, height - (height / 3));
+        
+        graphics.drawLine( width / 4, 0, width / 4, height);
+        graphics.drawLine( width / 2, 0, width / 2, height);
+        graphics.drawLine( width - (width / 4), 0, width - (width / 4), height);
+    }
 }
