@@ -198,8 +198,10 @@ public class Feed extends Thread {
         graphics.drawOval(gui.mouseX - offset, gui.mouseY - offset, mask.getSpotSize() - strokeWidth, mask.getSpotSize() - strokeWidth);
 
         // Draw grid-lines if requested
-        if (gridLines)
+        if (gridLines) {
+            graphics.setColor(new Color(0f, 1f, 0f, 0.5f));
             addGridLines(graphics);
+        }
         
         // We are done drawing, display the new graphics:
         gui.displayLabel.setIcon(new ImageIcon(output));
@@ -209,10 +211,11 @@ public class Feed extends Thread {
     
     /**
      *  Apply grid-lines to the image before displaying it
+     * 
+     *  @param graphics The graphics object to draw grid lines on.
      */
     public void addGridLines (Graphics2D graphics) {
         int strokeWidth = 4;
-        graphics.setColor(new Color(0f, 1f, 0f, 0.5f));
         graphics.setStroke(new BasicStroke(strokeWidth));
         
         // Draw four lines around the perimiter
