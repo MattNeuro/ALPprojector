@@ -24,11 +24,12 @@ public class Feed extends Thread {
     
     private boolean             active          = true;
     private boolean             gridLines       = false;
+    private boolean             deinterlace     = false;
     private Rectangle           captureArea;
     private Mask                mask;
     private int                 captureWidth    = 1024,
                                 captureHeight   = 768;
-    private static int          width           = 1024,
+    private static int          width           = 1024, //  The width and height of our projector
                                 height          = 768;
     private static Feed         instance;   // Singleton instance.
     private static Preferences  preferences;
@@ -37,7 +38,6 @@ public class Feed extends Thread {
     /**
      *  Singleton pattern, we don't want to create multiple feeds.
      * 
-     *  @param  parent  Controller.
      *  @return The Feed instance.
      */
     public static Feed getInstance () {
@@ -105,6 +105,10 @@ public class Feed extends Thread {
     public void setActive (boolean newState) {
         this.active = newState;
     }
+    public void setDeinterlacing (boolean deinterlace) {
+        this.deinterlace = deinterlace;
+    }
+    
     
     public boolean getGridLinesActive () {
             return this.gridLines;
@@ -120,9 +124,6 @@ public class Feed extends Thread {
      *  @return 
      */
     public byte[] getBitMask() {
-        
-        
-        
         return mask.asBitMask();
     }
     
@@ -210,19 +211,23 @@ public class Feed extends Thread {
     
     
     /**
-     *  Apply grid-lines to the image before displaying it
+     *  Apply grid-lines to the image before displaying it.
+     *  
+     *  Lines are drawn from the center out, so to ensure our lines are
+     *  not half cut-off at the edges, take this stroke width into account
+     *  when determining the origin point. This got a bit messy. 
      * 
      *  @param graphics The graphics object to draw grid lines on.
      */
     public void addGridLines (Graphics2D graphics) {
-        int strokeWidth = 4;
+        int strokeWidth = 5;
         graphics.setStroke(new BasicStroke(strokeWidth));
         
         // Draw four lines around the perimiter
-        graphics.drawLine(0, 0, width, 0);
-        graphics.drawLine(0, height, width, height);
-        graphics.drawLine(0, 0, 0, height);
-        graphics.drawLine(width - (strokeWidth/2), 0, width - (strokeWidth/2), height);
+        graphics.drawLine(0, (strokeWidth / 2) + 1, width, (strokeWidth / 2) + 1);
+        graphics.drawLine(0, height - (strokeWidth / 2) - 1, width, height - (strokeWidth / 2) - 1);
+        graphics.drawLine((strokeWidth / 2), 0, (strokeWidth / 2), height);
+        graphics.drawLine(width - strokeWidth, 0, width - strokeWidth, height);
         
         // Draw 2 horizontal and 3 vertical dividing lines
         graphics.drawLine(0, height / 3, width, height / 3);

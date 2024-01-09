@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_BYTE_BINARY;
 import java.awt.image.DataBufferByte;
-import java.util.BitSet;
 import java.util.LinkedList;
 
 /**
