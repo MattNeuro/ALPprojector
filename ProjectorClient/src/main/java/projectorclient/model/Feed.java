@@ -220,14 +220,14 @@ public class Feed extends Thread {
      *  @param graphics The graphics object to draw grid lines on.
      */
     public void addGridLines (Graphics2D graphics) {
-        int strokeWidth = 5;
+        int strokeWidth = 20;
         graphics.setStroke(new BasicStroke(strokeWidth));
         
         // Draw four lines around the perimiter
         graphics.drawLine(0, (strokeWidth / 2) + 1, width, (strokeWidth / 2) + 1);
         graphics.drawLine(0, height - (strokeWidth / 2) - 1, width, height - (strokeWidth / 2) - 1);
         graphics.drawLine((strokeWidth / 2), 0, (strokeWidth / 2), height);
-        graphics.drawLine(width - strokeWidth, 0, width - strokeWidth, height);
+        graphics.drawLine(width - (strokeWidth / 2), 0, width - (strokeWidth / 2), height);
         
         // Draw 2 horizontal and 3 vertical dividing lines
         graphics.drawLine(0, height / 3, width, height / 3);
