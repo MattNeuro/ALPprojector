@@ -1,5 +1,6 @@
 package projectorclient.model;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_BYTE_BINARY;
@@ -42,33 +43,77 @@ public class Mask extends LinkedList<MaskSpot> {
     
     
     /**
-     *  Convert this mask into a bitmask. To do so, we first create a binary
-     *  buffered image, then create a graphics2D object from that which we can
-     *  use to draw the shape of each oval.
+     *  Convert this mask into a bitmask. 
+     * 
+     *  To do so, we first create a binary buffered image, then create a
+     *  graphics2D object from that which we can use to draw the shape of each
+     *  oval, as well as additional drawing operations we may need to perform.
      *  
-     * @return 
+     *  @return 
      */
     public byte[] asBitMask () {
-        BufferedImage source    = new BufferedImage(1024, 768, TYPE_BYTE_BINARY);
+        Feed feed = Feed.getInstance();
+        
+        BufferedImage source    = new BufferedImage(feed.width, feed.height, TYPE_BYTE_BINARY);
         Graphics2D graphics     = source.createGraphics();
         for (MaskSpot spot : this)
             graphics.fillOval(spot.x,spot.y, spot.size, spot.size);
         
         // check if we need to create grid lines on our mask:
-        Feed feed = Feed.getInstance();
         if (feed.getGridLinesActive())
             feed.addGridLines(graphics);
+        
+        // In case we use deinterlacing, we remove every other pixel
+        if (feed.getDeinterlaceActive())
+            deinterlaceGraphics(graphics);
 
         return ((DataBufferByte) source.getRaster().getDataBuffer()).getData();
     }
     
     
-    
+    /**
+     *  Add a new spot to the mask.
+     * 
+     *  This would normally be called whenever the user clicks on the mask
+     *  interface. The new spot is created at the point where the user clicked,
+     *  and with the width and height set to the current size of new spots.
+     * 
+     *  @param x
+     *  @param y 
+     */
     public void addSpot (int x, int y) {
         int xCenter = x - (spotSize / 2);
         int yCenter = y - (spotSize / 2);
         
         MaskSpot newSpot = new MaskSpot(xCenter, yCenter, spotSize);
         super.add(newSpot);
+    }
+    
+    
+    /**
+     *  Reduce the amount of light going to the brain.
+     * 
+     *  This deinterlaces our project image by effectively removing every 
+     *  second horizontal and vertical row of pixels. The net effect is a
+     *  75% reduction in reflected light (in theory, anyway). This makes it
+     *  extremely easy to switch between low and high light power without
+     *  adjusting the laser.
+     * 
+     *  @param graphics 
+     */
+    private void deinterlaceGraphics (Graphics2D graphics) {
+        Feed feed       = Feed.getInstance();
+        Color oldColor  = graphics.getColor();
+        graphics.setColor(new Color(0f, 0f, 0f, 0.0f)); // set to transparant
+        
+        // draw horizontal lines
+        for (int i = 0; i < feed.height; i += 2) 
+            graphics.drawLine(0, i, feed.width, i);
+        // draw vertical lines
+        for (int i = 0; i < feed.width; i += 2)
+            graphics.drawLine(i, 0, i, feed.height);
+        
+        // reset color back to the original
+        graphics.setColor(oldColor);
     }
 }

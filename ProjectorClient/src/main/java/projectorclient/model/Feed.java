@@ -29,7 +29,7 @@ public class Feed extends Thread {
     private Mask                mask;
     private int                 captureWidth    = 1024,
                                 captureHeight   = 768;
-    private static int          width           = 1024, //  The width and height of our projector
+    public static int           width           = 1024, //  The width and height of our projector
                                 height          = 768;
     private static Feed         instance;   // Singleton instance.
     private static Preferences  preferences;
@@ -99,11 +99,12 @@ public class Feed extends Thread {
     public void setMaskSpotSize (int newSize) {
         mask.setSpotSize(newSize);
     }
-    public void setGridLinesActive (boolean gridLinesActive) {
-        this.gridLines = gridLinesActive;
-    }
     public void setActive (boolean newState) {
         this.active = newState;
+    }
+    
+    public void setGridLinesActive (boolean gridLinesActive) {
+        this.gridLines = gridLinesActive;
     }
     public void setDeinterlacing (boolean deinterlace) {
         this.deinterlace = deinterlace;
@@ -111,7 +112,10 @@ public class Feed extends Thread {
     
     
     public boolean getGridLinesActive () {
-            return this.gridLines;
+        return this.gridLines;
+    }
+    public boolean getDeinterlaceActive () {
+        return this.deinterlace;
     }
     
     
