@@ -45,9 +45,9 @@ public class NetworkClient {
         OutputStream output = socket.getOutputStream();
         
         byte[] data = Feed.getInstance().getBitMask();        
-        BitSet bitset = BitSet.valueOf(data);
+        //BitSet bitset = BitSet.valueOf(data);
         
-        System.out.println("Ready to write " + data + " bytes");
+        System.out.println("Ready to write " + data.length + " bytes");
         
         output.write(data);
         
