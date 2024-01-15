@@ -19,7 +19,7 @@ If you prefer to not run binaries from the internet, or use a different architec
 
 
 ### ALPClient
-The ALPclient is written in JAVA, and requires the JAVA runtime environment. Please see [this page](https://www.java.com/en/download/help/download_options.html]) for instructions on installing JAVA on your platform. Once JAVA has been installed, navigate to `ALPprojector\ProjectorClient\target\` and run ProjectorClient-1.jar with the following command: `java -jar ProjectorClient-1.jar`. Depending on your installation, you may also be able to simply double-click the jar file to run it. 
+The ALPclient is written in JAVA, and requires the JAVA runtime environment. Please see [this page](https://www.java.com/en/download/help/download_options.html]) for instructions on installing JAVA on your platform. Once JAVA has been installed, download the `ALPprojector\ProjectorClient\target\` folder, and run ProjectorClient-1.jar with the following command: `java -jar ProjectorClient-1.jar`. Depending on your installation, you may also be able to simply double-click the jar file to run it. 
 
 
 ## Using the ALPclient
