@@ -19,14 +19,14 @@ If you prefer to not run binaries from the internet, or use a different architec
 
 
 ### ALPClient
-The ALPclient is written in JAVA, and requires the JAVA runtime environment. Please see [this page](https://www.java.com/en/download/help/download_options.html]) for instructions on installing JAVA on your platform. Once JAVA has been installed, navigate to `ALPprojector\ProjectorClient\target\` and run ProjectorClient-1.jar with the following command: `java -jar ProjectorClient-1.jar`. Depending on your installation, you may also be able to simply double-click the jar file to run it. 
+The ALPclient is written in JAVA, and requires the JAVA runtime environment. Please see [this page](https://www.java.com/en/download/help/download_options.html]) for instructions on installing JAVA on your platform. Once JAVA has been installed, download the `ALPprojector\ProjectorClient\target\` folder, and run ProjectorClient-1.jar with the following command: `java -jar ProjectorClient-1.jar`. Depending on your installation, you may also be able to simply double-click the jar file to run it. 
 
 
 ## Using the ALPclient
 The ALPclient is designed to work with any microscope software. It captures an area of the screen where your image is displayed and updates this in real-time. The capture area must be manually configured, but this configuration is stored for subsequent uses. The four parameters specify the location of your microscope image on your screen, and its width and height. The easiest way to calibrate this, is to use the `grid lines` option which will project a basic grid onto your sample. Adjust the offsets until the outside boundaries are just included in the preview, then change the width and height to match the width and height of your projection. 
 
 ### Mask Size
-Clicking on the preview image will project a circular mask on that spot. The `mask size` slider controls the size of that spot. At its smallest, the user can turn on individual pixels, scaling up to what should hopefully be a large enough spot to mask off even the biggest of cells. When using the ProjectorClient, press `G` or `H` on your keyboard to decrease or increase the size of the mask. 
+Left-clicking on the preview image will project a circular mask on that spot. Right-clicking on a mask will remove it. The `mask size` slider controls the size of that spot. At its smallest, the user can turn on individual pixels, scaling up to what should hopefully be a large enough spot to mask off even the biggest of cells. When using the ProjectorClient, press `G` or `H` on your keyboard to decrease or increase the size of the mask. 
 
 ### Clear all
 Clears all masks. This does not immediately upload the updated mask to the projector.
