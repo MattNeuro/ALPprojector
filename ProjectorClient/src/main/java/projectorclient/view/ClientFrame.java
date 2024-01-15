@@ -295,7 +295,12 @@ public class ClientFrame extends javax.swing.JFrame {
     private void displayLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_displayLabelMouseClicked
         int x = evt.getX();
         int y = evt.getY();
-        Feed.getInstance().addMaskSpot(x,y);
+
+        if (evt.getButton() == 1)   // Mouse 1, left-click
+            Feed.getInstance().addMaskSpot(x,y);
+        if (evt.getButton() == 3)   // Mouse 3, right-click
+            Feed.getInstance().removeMaskSpot(x,y);
+        
         System.out.println("Adding mask spot.");
     }//GEN-LAST:event_displayLabelMouseClicked
 

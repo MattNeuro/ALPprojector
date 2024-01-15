@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_BYTE_BINARY;
 import java.awt.image.DataBufferByte;
+import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 
 /**
@@ -90,6 +91,26 @@ public class Mask extends LinkedList<MaskSpot> {
     }
     
     
+    public void removeSpot (int x, int y) {
+        try {        
+            for (MaskSpot spot : this) {
+                int radius = spot.size / 2;
+
+                // calculate euclidian distance to spot
+                int dX          = (spot.x + radius) - x;
+                int dY          = (spot.y + radius) - y;
+                int distance    = (int) Math.sqrt((dX * dX) + (dY * dY));
+
+                // If we clicked on the spot, remove it.
+                if (distance < radius)
+                        super.remove(spot);
+            }
+        } catch (ConcurrentModificationException e) { 
+            // We are modifying the LinkedList while we iterate over it. Ignore it.
+        }
+    }
+    
+    
     /**
      *  Reduce the amount of light going to the brain.
      * 
@@ -104,7 +125,7 @@ public class Mask extends LinkedList<MaskSpot> {
     private void deinterlaceGraphics (Graphics2D graphics) {
         Feed feed       = Feed.getInstance();
         Color oldColor  = graphics.getColor();
-        graphics.setColor(new Color(0f, 0f, 0f, 0.0f)); // set to transparant
+        graphics.setColor(new Color(1f, 1f, 1f, 1.0f)); // full white pixels should be off?
         
         // draw horizontal lines
         for (int i = 0; i < feed.height; i += 2) 

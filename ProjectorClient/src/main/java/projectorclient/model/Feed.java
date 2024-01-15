@@ -96,6 +96,10 @@ public class Feed extends Thread {
     public void addMaskSpot (int x, int y) {
         mask.addSpot(x, y);
     }
+    public void removeMaskSpot (int x, int y) {
+        mask.removeSpot(x, y);
+    }
+    
     public void setMaskSpotSize (int newSize) {
         mask.setSpotSize(newSize);
     }
