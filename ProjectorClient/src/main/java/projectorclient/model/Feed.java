@@ -211,6 +211,9 @@ public class Feed extends Thread {
             graphics.setColor(new Color(0f, 1f, 0f, 0.5f));
             addGridLines(graphics);
         }
+        if (deinterlace)
+            Mask.deinterlaceGraphics(graphics);
+        
         
         // We are done drawing, display the new graphics:
         gui.displayLabel.setIcon(new ImageIcon(output));

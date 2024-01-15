@@ -1,5 +1,6 @@
 package projectorclient.model;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -7,6 +8,9 @@ import static java.awt.image.BufferedImage.TYPE_BYTE_BINARY;
 import java.awt.image.DataBufferByte;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
+import javax.swing.ImageIcon;
+import projectorclient.controller.Controller;
+import projectorclient.view.ClientFrame;
 
 /**
  *  Keep track of the masked areas, indicating areas that will be
@@ -67,7 +71,7 @@ public class Mask extends LinkedList<MaskSpot> {
         // In case we use deinterlacing, we remove every other pixel
         if (feed.getDeinterlaceActive())
             deinterlaceGraphics(graphics);
-
+        
         return ((DataBufferByte) source.getRaster().getDataBuffer()).getData();
     }
     
@@ -122,19 +126,16 @@ public class Mask extends LinkedList<MaskSpot> {
      * 
      *  @param graphics 
      */
-    private void deinterlaceGraphics (Graphics2D graphics) {
+    public static void deinterlaceGraphics (Graphics2D graphics) {
         Feed feed       = Feed.getInstance();
-        Color oldColor  = graphics.getColor();
-        graphics.setColor(new Color(1f, 1f, 1f, 1.0f)); // full white pixels should be off?
+        graphics.setStroke(new BasicStroke(1));
+        graphics.setColor(new Color(0f, 0f, 0f, 1.0f)); // full black pixels should be off?
         
         // draw horizontal lines
-        for (int i = 0; i < feed.height; i += 2) 
+        for (int i = 0; i < feed.height; i += 3) 
             graphics.drawLine(0, i, feed.width, i);
         // draw vertical lines
-        for (int i = 0; i < feed.width; i += 2)
+        for (int i = 0; i < feed.width; i += 3)
             graphics.drawLine(i, 0, i, feed.height);
-        
-        // reset color back to the original
-        graphics.setColor(oldColor);
     }
 }
